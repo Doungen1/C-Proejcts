@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+// Structures section
+struct Race {
+  int numberOfLaps;
+  int currentLap;
+  char* firstPlaceDriverName;
+  char* firstPlaceRaceCarColor;
+};
+
+struct RaceCar{
+  char* driverName;
+  char* raceCarColor;
+  int totalLapTime;
+};
+
+// Print functions section
+const char* printIntro(void){
+  printf("Welcome to the RaceTrack by Codemasters.\n        Prepare for the race!");
+}
+const char* printCountDown(){
+  int i=5;
+  printf("\nRacers Ready! In...");
+  while(i>0){
+    printf("\n%d", i);
+    i--;
+  if (i==0){
+    printf("\nRace\n");
+  }
+  }
+}
+
+void printFirstPlaceAfterLap(struct Race race){
+  printf("\nAfter lap number %d\nFirst Place is: %s in the %s race car\n", race.currentLap, race.firstPlaceDriverName, race.firstPlaceRaceCarColor);
+}
+
+void printCongratulation(struct Race race){
+  printf("\nLet's all congratulate %s in the %s race car for an amazing performance.\nIt truly was a great race and everybody have a goodnight", race.firstPlaceDriverName, race.firstPlaceRaceCarColor);
+}
+// Logic functions section
+int calculateTimeToComplete(void){
+  int speed;
+  int acceleration;
+  int nerves;
+  speed = (rand() % 3) + 1;
+  acceleration = (rand() % 3) +1;
+  nerves = (rand() % 3) +1;
+  return speed+acceleration+nerves;
+}
+
+void updateRaceCar(struct RaceCar* raceCar){
+  raceCar->totalLapTime += calculateTimeToComplete();
+}
+
+void updateFirstPlace(struct Race* race, struct RaceCar* raceCar1, struct RaceCar* raceCar2){
+  if (raceCar1->totalLapTime <=  raceCar2 ->totalLapTime){
+    race -> firstPlaceDriverName = raceCar1 -> driverName;
+    race -> firstPlaceRaceCarColor = raceCar1 -> raceCarColor;
+    }
+  else {
+    race -> firstPlaceDriverName = raceCar2 -> driverName;
+    race -> firstPlaceRaceCarColor = raceCar2 -> raceCarColor;
+  }
+}
+
+int main() {
+	srand(time(0)); 
+
+void startRace(struct RaceCar* raceCar1, struct RaceCar* raceCar2){
+  struct Race race = {
+    .numberOfLaps = 5,
+    .currentLap = 0,
+    .firstPlaceDriverName = "",
+    .firstPlaceRaceCarColor = ""
+  };
+  for (int i=0; i <= race.numberOfLaps; i++){
+    updateRaceCar(raceCar1);
+    updateRaceCar(raceCar2);
+    updateFirstPlace(&race, raceCar1, raceCar2);
+    printFirstPlaceAfterLap(race); 
+    race.currentLap++;
+  }
+  printCongratulation(race);
+}
+  struct RaceCar Car1 ={"Super", "red", .0};
+  struct RaceCar Car2 ={"Obly", "blue", 0};
+
+  printIntro();
+  printCountDown();
+  startRace(&Car1, &Car2);
+};
